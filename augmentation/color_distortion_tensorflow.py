@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 def get_color_distortion(imgs, s=1.0):
     '''
     input: 
-    imgs: batch of tensor RGB images [batch, H, W, 3]
+    imgs: batch of tensor RGB images [batch, H, W, 3] in range [0, 1]
     s: distortion strength in [0, 1]
 
     output: 
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     img_origin = cv2.cvtColor(img_origin, cv2.COLOR_BGR2RGB)
     img = tf.convert_to_tensor(img_origin, dtype=tf.float32) # [H, W, 3]
     imgs = tf.expand_dims(img, axis=0) # [1, H, W, 3]
+    imgs = imgs / 255 # Normalization
     imgs_aug = get_color_distortion(imgs, s=1.0) # output is a image tensor
     imgs_aug = imgs_aug.numpy()[0]
 
