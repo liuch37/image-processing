@@ -6,3 +6,4 @@ Implement several common while useful image processing methods listed in the lit
 Method           |Library                 |Reference                           |
 ---------------- |------------------------|------------------------------------|
 Color distortion |PyTorch                 |https://arxiv.org/abs/2002.05709    |
+Color distortion |TensorFlow              |https://arxiv.org/abs/2002.05709.   |
