@@ -7,4 +7,4 @@ Method           |Library                 |Reference                           |
 ---------------- |------------------------|------------------------------------|
 Color distortion |PyTorch                 |https://arxiv.org/abs/2002.05709    |
 Color distortion |TensorFlow              |https://arxiv.org/abs/2002.05709.   |
-Mosaic augmentation |TensorFlow           |https://arxiv.org/abs/2004.10934    |
+Mosaic           |TensorFlow              |https://arxiv.org/abs/2004.10934    |
