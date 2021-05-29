@@ -7,5 +7,5 @@ Method           |Library                 |Reference                           |
 ---------------- |------------------------|------------------------------------|
 Color distortion |PyTorch                 |https://arxiv.org/abs/2002.05709    |
 Color distortion |TensorFlow              |https://arxiv.org/abs/2002.05709.   |
-Mosaic           |TensorFlow              |https://arxiv.org/abs/2004.10934    |
-CutMix           |Numpy                   |https://arxiv.org/abs/1905.04899    |
+Mosaic           |Numpy                   |https://arxiv.org/abs/2004.10934    |
+CutMix           |PyTorch                 |https://arxiv.org/abs/1905.04899    |
