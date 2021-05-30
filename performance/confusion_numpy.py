@@ -1,5 +1,5 @@
 '''
-This is to implement confusion matrix computation and its plotting function.
+This is to implement arbitrary confusion matrix visualization function.
 This code is modified from https://www.kaggle.com/grfiv4/plot-a-confusion-matrix.
 '''
 
