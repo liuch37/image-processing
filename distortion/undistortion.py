@@ -35,11 +35,7 @@ def undistort(img, camera_mat, dist_mat, method='direct'):
             camera_mat, dist_mat, (img.shape[1], img.shape[0]), 1, (img.shape[1], img.shape[0])
         )
     if method == 'direct':
-        # undistort
         dst = cv2.undistort(img, camera_mat, dist_mat, None, new_m)
-        # crop the image
-        x, y, w, h = roi
-        dst_cropped = dst[y:y+h, x:x+w, :]
     elif method == 'remap':
         r_mat = np.eye(3)
         map1, map2 = cv2.initUndistortRectifyMap(
@@ -51,10 +47,12 @@ def undistort(img, camera_mat, dist_mat, method='direct'):
             cv2.CV_16SC2,
         )
         dst = cv2.remap(img, map1, map2, cv2.INTER_LINEAR, cv2.BORDER_CONSTANT)
-        dst_cropped = dst[roi[1]:roi[1]+roi[3], roi[0]:roi[0]+roi[2], :]
     else:
         print("Wrong method {} being entered!".format(method))
         exit(1)
+    # crop the image
+    x, y, w, h = roi
+    dst_cropped = dst[y:y+h, x:x+w, :]
 
     return dst_cropped
 
