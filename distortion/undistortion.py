@@ -1,6 +1,7 @@
 '''
 This code is to undistort image given intrinsic calibration.
-Reference: https://github.com/vwvw/opencv_live_distortion
+Reference 1: https://github.com/vwvw/opencv_live_distortion
+Reference 2: https://docs.opencv.org/3.4.15/dc/dbb/tutorial_py_calibration.html
 '''
 import cv2
 import numpy as np
