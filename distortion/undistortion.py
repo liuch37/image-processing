@@ -32,6 +32,7 @@ def undistort(img, camera_mat, dist_mat, method='direct'):
     """
     Retrieve the chosen camera and distortion settings and then undistort the image
     """
+    # create new camera matrix
     new_m, roi = cv2.getOptimalNewCameraMatrix(
             camera_mat, dist_mat, (img.shape[1], img.shape[0]), 1, (img.shape[1], img.shape[0])
         )
@@ -55,7 +56,7 @@ def undistort(img, camera_mat, dist_mat, method='direct'):
     x, y, w, h = roi
     dst_cropped = dst[y:y+h, x:x+w, :]
 
-    return dst_cropped
+    return dst_cropped, new_m, roi
 
 # unit testing
 if __name__ == '__main__':
@@ -80,12 +81,30 @@ if __name__ == '__main__':
     s4 = 0.0
     tx = 0.0
     ty = 0.0
+    # bounding box
+    xmin, ymin, xmax, ymax = 138, 151, 212, 246
     # read image
     img = cv2.imread(test_image_path)
+    img = cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (255, 0, 0), 3)
+    plt.imshow(img)
+    plt.show()
     # create matrices
     camera_mat, dist_mat = create_camera_matrix(fx, fy, cx, cy, k1, k2, p1, p2, k3, k4, k5, k6, s1, s2, s3, s4, tx, ty)
     # undistort images
-    img_undistorted = undistort(img, camera_mat, dist_mat, 'direct')
+    img_undistorted, new_m, roi = undistort(img, camera_mat, dist_mat, 'direct')
+    # undistort points
+    bbox_undistorted = np.zeros((2, 1, 2), dtype=np.float32)
+    bbox_undistorted[0, 0, 0], bbox_undistorted[0, 0, 1] = xmin, ymin
+    bbox_undistorted[1, 0, 0], bbox_undistorted[1, 0, 1] = xmax, ymax
+    bbox_undistorted = cv2.undistortPoints(bbox_undistorted, camera_mat, dist_mat, None, new_m)
+    print(bbox_undistorted)
+    xmin, ymin, xmax, ymax = bbox_undistorted[0, 0, 0], bbox_undistorted[0, 0, 1], bbox_undistorted[1, 0, 0], bbox_undistorted[1, 0, 1]
+    # shift bounding box according to ROI
+    xmin = xmin - roi[0]
+    ymin = ymin - roi[1]
+    xmax = xmax - roi[0]
+    ymax = ymax - roi[1]
+    img_undistorted = cv2.rectangle(img_undistorted, (int(xmin), int(ymin)), (int(xmax), int(ymax)), (0, 255, 0), 3)
     print(img_undistorted)
     print(img_undistorted.shape)
     plt.imshow(img_undistorted)
