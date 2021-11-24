@@ -7,6 +7,27 @@ import numpy as np
 import pptk
 import pdb
 
+def read_pcd(file):
+    '''
+    Read a pcd file, specifically with X Y Z Intensity
+    input: a .pcd file path
+    output: a numpy array with [x, y, z, I], shape = (num_points, 4)
+    '''
+    lines = []
+    num_points = None
+    with open(file, 'r') as f:
+        for line in f:
+            lines.append(line.strip())
+            if line.startswith('POINTS'):
+                num_points = int(line.split()[-1])
+    assert num_points is not None
+    points = []
+    for line in lines[-num_points:]:
+        x, y, z, i = list(map(float, line.split()[0:4]))
+        points.append(np.array([x, y, z, i]))
+
+    return np.asarray(points)
+
 def visualize_pcd(file, visualize=True, method='open3d'):
     '''
     input:
@@ -45,11 +66,24 @@ def ply2pcd(input_file, output_file):
     return
 
 if __name__ == '__main__':
-    pcd_file = '../test_images/Chair.pcd'
+    pcd_file1 = '../test_images/Chair.pcd'
     ply_file = '../test_images/Chair.ply'
+    pcd_file2 = 'D:/shimizu/data/shimizu/extrinsic_calibration/Nitto_Extrinsic_Test_Fr/lidar/000000.pcd'
 
     # convert a ply file to a pcd file
     #ply2pcd(ply_file, pcd_file)
 
     # visualize a pcd file
-    visualize_pcd(pcd_file, True, 'pptk')
+    visualize_pcd(pcd_file1, True, 'pptk')
+
+    # read a pcd file
+    points = read_pcd(pcd_file2)
+    # filtering
+    #index = np.where((points[:, 0] >= 0))
+    #points = points[index[0], :]
+    # visualization
+    xyz = np.asarray(points[:,:3])
+    v = pptk.viewer(xyz)
+    v.set(point_size=0.005)
+    v.attributes(points[:,-1], points[:, 0])
+    v.wait()
