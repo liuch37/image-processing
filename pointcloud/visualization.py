@@ -68,7 +68,7 @@ def ply2pcd(input_file, output_file):
 if __name__ == '__main__':
     pcd_file1 = '../test_images/Chair.pcd'
     ply_file = '../test_images/Chair.ply'
-    pcd_file2 = 'D:/shimizu/data/shimizu/extrinsic_calibration/Nitto_Extrinsic_Test_Fr/lidar/000000.pcd'
+    pcd_file2 = '000000.pcd'
 
     # convert a ply file to a pcd file
     #ply2pcd(ply_file, pcd_file)
