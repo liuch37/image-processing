@@ -58,6 +58,27 @@ def undistort(img, camera_mat, dist_mat, method='direct'):
 
     return dst_cropped, new_m, roi
 
+def lidar2imageprojection(points, tform, IntrinsicMatrix):
+    """
+    Project LiDAR point cloud to 2D image plane
+    Input:
+    points: numpy array for 3D points in [num_points, 3]
+    tform: a numpy array of 4x4 extrinsic calibration matrix provided by matlab
+    IntrinsicMatrix: a numpy array of 3x3 intrinsic calibration matrix provided by matlab
+    Output:
+    projectPoints: a numpy array for 2D points in [num_points, 2]
+    """
+    # extrinsic calibration
+    R = tform.T[:3, :3]
+    t = tform.T[3, :3]
+    xyzPts = np.matmul(points, R) + t # [num_points, 3]
+    # intrinsic calibration
+    projectedPts = np.matmul(IntrinsicMatrix.T, xyzPts.T) # [3, num_points]
+    normalisedPts = (projectedPts / projectedPts[2, :]).T # [num_points, 3]
+    projectPoints = normalisedPts[:, 0:2] # [num_points, 2]
+
+    return projectPoints
+
 # unit testing
 if __name__ == '__main__':
     # input path
