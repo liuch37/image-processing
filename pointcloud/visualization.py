@@ -4,6 +4,7 @@ Reference: https://blog.csdn.net/guaiderzhu1314/article/details/105749413
 '''
 import open3d as o3d
 import numpy as np
+import os
 import pptk
 import pdb
 
@@ -65,22 +66,52 @@ def ply2pcd(input_file, output_file):
 
     return
 
+def numpy2pcd(array, output_file):
+    '''
+    Save a numpy array to a .pcd file (consider xyz only)
+    '''
+    # create open3d pointcloud object
+    pcl = o3d.geometry.PointCloud()
+    pcl.points = o3d.utility.Vector3dVector(array[:, :3])
+
+    # write to file
+    o3d.io.write_point_cloud(output_file, pcl, write_ascii=True, compressed=False, print_progress=False)
+
+    return
+
+
 if __name__ == '__main__':
     pcd_file1 = '../test_images/Chair.pcd'
     ply_file = '../test_images/Chair.ply'
-    pcd_file2 = '000000.pcd'
+    pcd_file2 = 'C:\\Users\\lic1syv\\Documents\\project\\shimizu\\data\\extrinsic_calibration\\Nitto_Extrinsic_Test_Fr\\lidar\\000020.pcd'
 
     # convert a ply file to a pcd file
     #ply2pcd(ply_file, pcd_file)
 
     # visualize a pcd file
-    visualize_pcd(pcd_file1, True, 'pptk')
+    #visualize_pcd(pcd_file1, True, 'pptk')
 
     # read a pcd file
     points = read_pcd(pcd_file2)
+
     # filtering
-    #index = np.where((points[:, 0] >= 0))
+    #xmin, xmax = 6.0, 13.0
+    #xmin, xmax = 29.0, 31.0
+    xmin, xmax = 48.0, 50.0
+    ymin, ymax = -0.40, 1.695
+    zmin, zmax = -3.4, 1.6
+
+    # filtering
+    index = np.where((points[:, 0] >= xmin) & (points[:, 0] <= xmax) &
+                     (points[:, 1] >= ymin) & (points[:, 1] <= ymax) &
+                     (points[:, 2] >= zmin) & (points[:, 2] <= zmax)
+                    )
     #points = points[index[0], :]
+
+    name = os.path.basename(pcd_file2)
+
+    #numpy2pcd(points[:, :3], os.path.join('./filtered/', name))
+
     # visualization
     xyz = np.asarray(points[:,:3])
     v = pptk.viewer(xyz)
