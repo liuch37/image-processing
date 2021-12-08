@@ -83,7 +83,7 @@ def numpy2pcd(array, output_file):
 if __name__ == '__main__':
     pcd_file1 = '../test_images/Chair.pcd'
     ply_file = '../test_images/Chair.ply'
-    pcd_file2 = 'C:\\Users\\lic1syv\\Documents\\project\\shimizu\\data\\extrinsic_calibration\\Nitto_Extrinsic_Test_Fr\\lidar\\000020.pcd'
+    pcd_file2 = 'C:\\Users\\lic1syv\\Documents\\project\\shimizu\\data\\extrinsic_calibration\\Nitto_Extrinsic_Test_Rr\\lidar\\000020.pcd'
 
     # convert a ply file to a pcd file
     #ply2pcd(ply_file, pcd_file)
@@ -97,20 +97,21 @@ if __name__ == '__main__':
     # filtering
     #xmin, xmax = 6.0, 13.0
     #xmin, xmax = 29.0, 31.0
-    xmin, xmax = 48.0, 50.0
-    ymin, ymax = -0.40, 1.695
-    zmin, zmax = -3.4, 1.6
+    #xmin, xmax = 48.0, 50.0
+    xmin, xmax = -47.5, -45
+    ymin, ymax = -2.0, 0.3
+    zmin, zmax = -2.6, 1.6
 
     # filtering
     index = np.where((points[:, 0] >= xmin) & (points[:, 0] <= xmax) &
                      (points[:, 1] >= ymin) & (points[:, 1] <= ymax) &
                      (points[:, 2] >= zmin) & (points[:, 2] <= zmax)
                     )
-    #points = points[index[0], :]
+    points = points[index[0], :]
 
     name = os.path.basename(pcd_file2)
 
-    #numpy2pcd(points[:, :3], os.path.join('./filtered/', name))
+    numpy2pcd(points[:, :3], os.path.join('./filtered/', name))
 
     # visualization
     xyz = np.asarray(points[:,:3])
