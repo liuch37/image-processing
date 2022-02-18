@@ -16,6 +16,7 @@ Method           |Library      |
 -----------------|-------------|
 Confusion matrix |Numpy        |
 Point cloud      |open3d, pptk |
+Attention Map    |Numpy, OpenCV|
 
 ## Image Undistortion
 
